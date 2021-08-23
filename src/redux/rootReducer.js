@@ -1,6 +1,6 @@
 import { combineReducers } from "redux"
 import { asyncAC } from "./actiCreators"
-import { ASYNC_INC, CHANGE_THEME, DECREMENT, INCRIMENT } from "./types"
+import { ASYNC_INC, CHANGE_THEME, DECREMENT, DISABLE_BTNS, ENABLE_BTNS, INCRIMENT } from "./types"
 
 const counterReducer=(state=0, action)=>{
   
@@ -16,7 +16,8 @@ const counterReducer=(state=0, action)=>{
 }
 
 const initialThemeState ={
-  value: 'light'
+  value: 'light',
+  disabled:false
 }
 
  const themeReducer =(state=initialThemeState, action)=>{
@@ -24,7 +25,10 @@ const initialThemeState ={
    case CHANGE_THEME:
      
      return {...state, value: action.payload};
- 
+   case DISABLE_BTNS: 
+   return {...state, disabled:true}
+   case ENABLE_BTNS: 
+   return {...state, disabled:false}
    default:
      return state
  }

@@ -1,4 +1,4 @@
-import { ASYNC_INC, CHANGE_THEME, DECREMENT, INCRIMENT } from "./types"
+import { ASYNC_INC, CHANGE_THEME, DECREMENT, DISABLE_BTNS, ENABLE_BTNS, INCRIMENT } from "./types"
 
 export const incrementAC = ()=> {
     return{
@@ -15,8 +15,12 @@ export const decrementAC = () =>{
 }
 
 export const asyncAC= ()=> {
+
     return function(dispatch) {
-        setTimeout(()=>{dispatch(incrementAC())},1500) 
+        dispatch(disableAC())
+        setTimeout(()=>{ dispatch(incrementAC())
+                         dispatch(enableAC()) } , 1500) 
+      
     }
         
     }
@@ -26,4 +30,16 @@ export const themeAC = (thm) =>{
         type: CHANGE_THEME,
         payload: thm
     }
+}
+
+export const disableAC = () =>{
+  return{
+      type: DISABLE_BTNS
+  }
+}
+
+export const enableAC = () =>{
+return{
+    type:ENABLE_BTNS
+}
 }

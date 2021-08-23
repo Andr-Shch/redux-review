@@ -1,4 +1,4 @@
-import { applyMiddleware, createStore } from 'redux'
+import { applyMiddleware, compose, createStore } from 'redux'
 import { asyncAC, decrementAC, incrementAC, themeAC } from './redux/actiCreators'
 import { rootReducer } from './redux/rootReducer'
 import { DECREMENT, INCRIMENT } from './redux/types'
@@ -11,13 +11,14 @@ const subBtn = document.getElementById('sub')
 const asyncBtn = document.getElementById('async')
 const themeBtn = document.getElementById('theme')
 
-const store = createStore(rootReducer,  applyMiddleware(thunk))
+const store = createStore(
+       rootReducer,  
+      compose(
+       applyMiddleware(thunk),
+       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+                          )
 
-store.subscribe( ()=> {
-    const state = store.getState()
-    counter.innerText = state.counter 
-    document.body.className = state.theme.value
-} )
+
 
 
 addBtn.addEventListener('click', ()=>{
@@ -43,6 +44,14 @@ themeBtn.addEventListener('click', ()=>{
    // console.log()
 })
 
- store.dispatch({type:"GIVE ME ZERO"})
+
 
 window.store = store
+store.subscribe( ()=> {
+    const state = store.getState()
+    counter.innerText = state.counter 
+    document.body.className = state.theme.value;
+    [addBtn, subBtn, themeBtn].forEach(btn=>btn.disabled = state.theme.disabled)
+} )
+
+store.dispatch({type:"GIVE ME ZERO"})
